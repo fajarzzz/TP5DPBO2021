@@ -10,9 +10,10 @@ import java.awt.Graphics;
 
 /**
  *
- * @author Fauzan
+ * @author Fajar
  */
 public class Player extends GameObject implements Runnable{
+    // thread to multiplayer mode
     private Thread thread;
 
     public Player(int x, int y, ID id){
@@ -20,11 +21,13 @@ public class Player extends GameObject implements Runnable{
         //speed = 1;
     }
     
+    // start thread
     public void start(){
         thread = new Thread(this);
         thread.start();
     }
     
+    // stop and merge thread
     public void stop(){
         try{
             thread.join();

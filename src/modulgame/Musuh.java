@@ -12,6 +12,7 @@ import java.awt.Graphics;
  *
  * @author FAJAR
  */
+// kelas object musuh
 public class Musuh extends GameObject{
     
     Musuh(int x,int y, ID id){

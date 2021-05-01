@@ -33,7 +33,10 @@ public class Game extends Canvas implements Runnable{
     public static final int HEIGHT = 600;
     
     private int score = 0;
+    // Library Random Generator 
     private final Random rand = new Random();
+    
+    // timer  
     private int time = 0;
     
     private Thread thread;
@@ -41,12 +44,19 @@ public class Game extends Canvas implements Runnable{
     
     private Handler handler;
     
+    //  Username dan Kesulitan  
     private String username = "";
     private String kesulitan = "";
+    
+    // counter waktu total
     private int waktu = 0;
+    // init maksimum random generator
     private int max = 0;
+    
+    // clip object and inputstream for audio
     Clip clip;
     AudioInputStream audioIn;
+    
     public enum STATE{
         Game,
         GameOver
@@ -61,22 +71,28 @@ public class Game extends Canvas implements Runnable{
         dbConnection dbcon;
         this.addKeyListener(new KeyInput(handler, this));
         
+        // property class game from menu
         this.username = username;
         this.kesulitan = kesulitan;
         
         if(gameState == STATE.Game){
+            // multiplayer on multithread
             Player player1 = new Player(200,200, ID.Player1);
             player1.start();
             handler.addObject(player1);
             Player player2 = new Player(300,200, ID.Player2);
             player2.start();
             handler.addObject(player2);
+            
+            // add object items
             handler.addObject(new Items(100,150, ID.Item));
             handler.addObject(new Items(200,350, ID.Item));
+            
+            // add objet musuh
             handler.addObject(new Musuh(150, 400, ID.Musuh));
         }
         
-        //  Kesulitan Game
+        //  Kesulitan Game sesuai spesifikasi
         switch (this.kesulitan) {
             case "Easy":
                 this.waktu = 20;
@@ -110,7 +126,8 @@ public class Game extends Canvas implements Runnable{
             e.printStackTrace();
         }
     }
-       
+     
+    // prosedur gerakan random musuh
     public void musuhMove(){
         if(this.gameState == STATE.Game){
             for(int i = 0;i<handler.object.size();i++){
@@ -136,6 +153,8 @@ public class Game extends Canvas implements Runnable{
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
+        
+        // play music along on game instance thread
         try {
             playSound("/bgm.wav", "bgm");
         } catch (InterruptedException ex) {
@@ -167,9 +186,11 @@ public class Game extends Canvas implements Runnable{
                 if(gameState == STATE.Game){
                     if(time>0){
                         time--;
+                        // invoke gerakan random musuh
                         musuhMove();
                     }else{
                         gameState = STATE.GameOver;
+                        // invoke action after gameover
                         endAction();
                     }
                 }
@@ -184,18 +205,20 @@ public class Game extends Canvas implements Runnable{
         GameObject playerObject1 = null;
         GameObject playerObject2 = null;
         if(gameState == STATE.Game){
+            // player 1 object get
             for(int i=0;i< handler.object.size(); i++){
                 if(handler.object.get(i).getId() == ID.Player1){
                    playerObject1 = handler.object.get(i);
                 }
             }
-            
+            // player 2 object get            
             for(int i=0;i< handler.object.size(); i++){
                 if(handler.object.get(i).getId() == ID.Player2){
                    playerObject2 = handler.object.get(i);
                 }
             }
             
+            // musuh object get            
             GameObject musuhObject = null;
             for(int i=0;i< handler.object.size(); i++){
                 if(handler.object.get(i).getId() == ID.Musuh){
@@ -203,6 +226,7 @@ public class Game extends Canvas implements Runnable{
                 }
             }
             
+            // collision musuh dengan player
             if(musuhObject != null){
                 for(int i=0;i< handler.object.size(); i++){
                     if(handler.object.get(i).getId() == ID.Player1 || handler.object.get(i).getId() == ID.Player2){
@@ -216,7 +240,7 @@ public class Game extends Canvas implements Runnable{
                     }
                 }
             }
-            
+            // collision items dengan player            
             if(playerObject1 != null && playerObject2 != null){
                 for(int i=0;i< handler.object.size(); i++){
                     if(handler.object.get(i).getId() == ID.Item){
@@ -235,6 +259,7 @@ public class Game extends Canvas implements Runnable{
         }
     }
     
+    // prosedur action after gameover, such as db insert, update, and notification
     public void endAction(){
         JOptionPane.showMessageDialog(null, "Game "+ username +" Berakhir");
         dbConnection dbcon = new dbConnection();
@@ -253,6 +278,7 @@ public class Game extends Canvas implements Runnable{
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }    
     }
+    
     public static boolean checkCollision(GameObject player, GameObject item){
         boolean result = false;
         
@@ -292,6 +318,7 @@ public class Game extends Canvas implements Runnable{
         g.setColor(Color.decode("#F1f3f3"));
         g.fillRect(0, 0, WIDTH, HEIGHT);
         
+        // add 3 object random coordinate if items is empty
         if(gameState ==  STATE.Game){
             if(handler.EmptyIs(handler.object)){
                 handler.addObject(new Items(rand.nextInt(WIDTH-60),rand.nextInt(HEIGHT-80),ID.Item));           
@@ -327,8 +354,7 @@ public class Game extends Canvas implements Runnable{
             
             g.setColor(Color.BLACK);
             g.drawString("Press Space to Continue", WIDTH/2 - 100, HEIGHT/2 + 30);
-        }
-                
+        }     
         g.dispose();
         bs.show();
     }
@@ -356,6 +382,8 @@ public class Game extends Canvas implements Runnable{
             clip = AudioSystem.getClip();
             // Open audio clip and load samples from the audio input stream.
             clip.open(audioIn);
+            
+            // play along if bgm played
             if(jenis.equals("bgm")){
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
             }

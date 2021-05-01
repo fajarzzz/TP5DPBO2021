@@ -148,9 +148,11 @@ public class Menu extends javax.swing.JFrame {
     private void Btn_PlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_PlayActionPerformed
         // TODO add your handling code here:
         if(!TF_Username.getText().equals("")){
+            // passing data username and tingkat kesulitan
             new Game(TF_Username.getText(),jComboBox1.getSelectedItem().toString());
             this.dispose();
         }else{
+            // throw dialog error if username empty
             JOptionPane.showMessageDialog(null, "Mohon isi username terlebih dahulu");
         }
     }//GEN-LAST:event_Btn_PlayActionPerformed

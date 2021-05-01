@@ -64,6 +64,7 @@ public class dbConnection {
         return dataTabel;
     }
     
+    // add data to database
     int addData(String user, int score, int waktu){
         connect();
         String query = "INSERT INTO highscore" + " (Username, Score, waktu) VALUES ('" + user + "', '" + score + "', '" + waktu + "');";
@@ -77,6 +78,7 @@ public class dbConnection {
     }
     
     @SuppressWarnings("empty-statement")
+    // cek data available on database
     ResultSet cekData(String user){
         connect();
         String query = "SELECT Username, Score FROM highscore WHERE username='" + user+ "';";
@@ -88,6 +90,7 @@ public class dbConnection {
         return null;
     }
     
+    // update data on database
     void updateData(String user, int score, int waktu) {
         connect();
         String query = "UPDATE highscore SET Score= ?, waktu= ? WHERE username= ?";

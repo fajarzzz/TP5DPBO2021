@@ -34,7 +34,7 @@ public class Handler {
     }
     
     /**
-     *
+     * cek object list if empty items
      * @param item
      * @return
      */

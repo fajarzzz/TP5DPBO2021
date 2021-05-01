@@ -28,7 +28,7 @@ public class KeyInput extends KeyAdapter{
         if(game.gameState == STATE.Game){
             for(int i = 0;i<handler.object.size();i++){
                 GameObject tempObject = handler.object.get(i);
-
+                // player 1 control
                 if(tempObject.getId() == ID.Player1){
                     if(key == KeyEvent.VK_W){
                         tempObject.setVel_y(-5);
@@ -45,7 +45,8 @@ public class KeyInput extends KeyAdapter{
                     if(key == KeyEvent.VK_D){
                         tempObject.setVel_x(+5);
                     }
-                }else if(tempObject.getId() == ID.Player2){
+                } else if(tempObject.getId() == ID.Player2){
+                    // player 2 control
                     if(key == KeyEvent.VK_I){
                         tempObject.setVel_y(-5);
                     }
@@ -84,7 +85,7 @@ public class KeyInput extends KeyAdapter{
         
         for(int i = 0;i<handler.object.size();i++){
             GameObject tempObject = handler.object.get(i);
-            
+            // player 1 control released
             if(tempObject.getId() == ID.Player1){
                 if(key == KeyEvent.VK_W){
                     tempObject.setVel_y(0);
@@ -102,6 +103,7 @@ public class KeyInput extends KeyAdapter{
                     tempObject.setVel_x(0);
                 }
             } else if(tempObject.getId() == ID.Player2){
+                // player 2 control released
                 if(key == KeyEvent.VK_I){
                     tempObject.setVel_y(0);
                 }
