@@ -2,6 +2,7 @@
 ## Spesifikasi Terpenuhi Semua
 ```
 ✔ Buatlah mode 2 player dari game ini dengan kontrol menggunakan keyboard.
+        Player 1 : WASD, Player 2 : IJKL
 ✔ Buatlah musuh dengan ketentuan musuh dapat berjalan otomatis dan apabila player menyentuh musuh maka game akan selesai.
 ✔ Buatlah nilai score dan penambahan waktu yang didapatkan dari item menjadi random.
 ✔ Apabila item sudah habis, maka akan dirender secara otomatis (koordinat dibuat random).
